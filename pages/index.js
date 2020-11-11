@@ -1,22 +1,22 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import {useState} from 'react'
+import styles from '../styles/Home.module.scss'
 
 
 
 
 export default function Home({blogs}){
 
-  return(<>
+  return(<main className={styles.main}>
   {blogs.map((blog,key)=>{
-    return(<div key={key}><h1>{blog.title}</h1> 
+    return(<Link href={`/blog/${blog.id}`}><div className={styles.container} key={key}><h1>{blog.title}</h1> 
     <h2>By {blog.user.username}</h2>
-      <p>{blog.description}</p></div>
+      <p>{blog.description}</p></div></Link>
      )
   })}
   
-  </>)
+  </main>)
 }
 
 export async function getStaticProps(){
@@ -26,7 +26,8 @@ export async function getStaticProps(){
   return{
     props:{
       blogs: json,
-    }
+    },
+    revalidate: 60*60,
   };
 }
 
